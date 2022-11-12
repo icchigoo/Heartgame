@@ -14,6 +14,7 @@ import component.PanelLoginAndRegister;
 import java.sql.SQLException;
 import service.ServiceMail;
 import service.ServiceUser;
+import model.ModelMessage;
 import component.Message;
 import javax.swing.JLayeredPane;
 import net.miginfocom.swing.MigLayout;
@@ -21,6 +22,8 @@ import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
 import connection.DatabaseConnection;
+import model.ModelLogin;
+import main.MainSystem;
 
 public class Main extends javax.swing.JFrame {
 
@@ -30,7 +33,7 @@ public class Main extends javax.swing.JFrame {
     private PanelLoading loading;
     private PanelVerifyCode verifyCode;
     private PanelLoginAndRegister loginAndRegister;
-    private boolean isLogin = true;
+    private boolean isLogin;
     private final double addSize = 30;
     private final double coverSize = 40;
     private final double loginSize = 60;
@@ -47,13 +50,22 @@ public class Main extends javax.swing.JFrame {
         cover = new PanelCover();
         loading = new PanelLoading();
         verifyCode = new PanelVerifyCode();
-         ActionListener eventRegister = new ActionListener() {
+        ActionListener eventRegister = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 register();
             }
         };
-        loginAndRegister = new PanelLoginAndRegister(eventRegister);
+        
+          ActionListener eventLogin = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                login();
+            }
+        };
+        
+        
+        loginAndRegister = new PanelLoginAndRegister(eventRegister, eventLogin);
         TimingTarget target = new TimingTargetAdapter() {
             @Override
             public void timingEvent(float fraction) {
@@ -106,10 +118,8 @@ public class Main extends javax.swing.JFrame {
         bg.setLayer(verifyCode, JLayeredPane.POPUP_LAYER);
         bg.add(loading, "pos 0 0 100% 100%");
         bg.add(verifyCode, "pos 0 0 100% 100%");
-        bg.add(cover, "width " + coverSize + "%, pos " + (isLogin ? "1al" : "0al") + " 0 n 100%");
-        bg.add(loginAndRegister, "width " + loginSize + "%, pos " + (isLogin ? "0al" : "1al") + " 0 n 100%"); //  1al as 100%
-        loginAndRegister.showRegister(!isLogin);
-        cover.login(isLogin);
+        bg.add(cover, "width " + coverSize + "%, pos 0al 0 n 100%");
+        bg.add(loginAndRegister, "width " + loginSize + "%, pos 1al 0 n 100%"); //  1al as 100%
         cover.addEvent(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -118,9 +128,26 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         });
+        verifyCode.addEventButtonOK(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                try {
+                    ModelUser user = loginAndRegister.getUser();
+                    if (service.verifyCodeWithUser(user.getUserID(), verifyCode.getInputCode())) {
+                        service.doneVerify(user.getUserID());
+                        showMessage(Message.MessageType.SUCCESS, "Register sucess");
+                        verifyCode.setVisible(false);
+                    } else {
+                        showMessage(Message.MessageType.ERROR, "Verify code incorrect");
+                    }
+                } catch (SQLException e) {
+                    showMessage(Message.MessageType.ERROR, "Error");
+                }
+            }
+        });
     }
-    
-      private void register() {
+
+    private void register() {
         ModelUser user = loginAndRegister.getUser();
         try {
             if (service.checkDuplicateUser(user.getUserName())) {
@@ -135,25 +162,41 @@ public class Main extends javax.swing.JFrame {
             showMessage(Message.MessageType.ERROR, "Error Register");
         }
     }
-      
-       private void sendMain(ModelUser user) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                loading.setVisible(true);
-//                ModelMessage ms = new ServiceMail().sendMain(user.getEmail(), user.getVerifyCode());
-//                if (ms.isSuccess()) {
-//                    loading.setVisible(false);
-//                    verifyCode.setVisible(true);
-//                } else {
-//                    loading.setVisible(false);
-//                    showMessage(Message.MessageType.ERROR, ms.getMessage());
-//                }
-//            }
-//        }).start();
-    }
     
-      private void showMessage(Message.MessageType messageType, String message) {
+     private void login() {
+        ModelLogin data = loginAndRegister.getDataLogin();
+        try {
+            ModelUser user = service.login(data);
+            if (user != null) {
+                this.dispose();
+                MainSystem.main(user);
+            } else {
+                showMessage(Message.MessageType.ERROR, "Email and Password incorrect");
+            }
+
+        } catch (SQLException e) {
+            showMessage(Message.MessageType.ERROR, "Error Login");
+        }
+    }
+
+    private void sendMain(ModelUser user) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                loading.setVisible(true);
+                ModelMessage ms = new ServiceMail().sendMain(user.getEmail(), user.getVerifyCode());
+                if (ms.isSuccess()) {
+                    loading.setVisible(false);
+                    verifyCode.setVisible(true);
+                } else {
+                    loading.setVisible(false);
+                    showMessage(Message.MessageType.ERROR, ms.getMessage());
+                }
+            }
+        }).start();
+    }
+
+    private void showMessage(Message.MessageType messageType, String message) {
         Message ms = new Message();
         ms.showMessage(messageType, message);
         TimingTarget target = new TimingTargetAdapter() {
@@ -247,11 +290,7 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -276,12 +315,6 @@ public class Main extends javax.swing.JFrame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Main().setVisible(true);
-            }
-        });
-        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Main().setVisible(true);

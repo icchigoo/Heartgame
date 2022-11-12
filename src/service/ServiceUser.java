@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.Random;
+import model.ModelLogin;
 
 public class ServiceUser {
 
@@ -15,6 +16,23 @@ public class ServiceUser {
 
     public ServiceUser() {
         con = DatabaseConnection.getInstance().getConnection();
+    }
+    
+       public ModelUser login(ModelLogin login) throws SQLException {
+        ModelUser data = null;
+        PreparedStatement p = con.prepareStatement("select UserID, UserName, Email from `user` where BINARY(Email)=? and BINARY(`Password`)=? and `Status`='Verified' limit 1");
+        p.setString(1, login.getEmail());
+        p.setString(2, login.getPassword());
+        ResultSet r = p.executeQuery();
+        if (r.first()) {
+            int userID = r.getInt(1);
+            String userName = r.getString(2);
+            String email = r.getString(3);
+            data = new ModelUser(userID, userName, email, "");
+        }
+        r.close();
+        p.close();
+        return data;
     }
 
     public void insertUser(ModelUser user) throws SQLException {
