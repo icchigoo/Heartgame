@@ -11,12 +11,16 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import model.ModelUser;
 import component.PanelLoginAndRegister;
+import java.sql.SQLException;
+import service.ServiceMail;
+import service.ServiceUser;
 import component.Message;
 import javax.swing.JLayeredPane;
 import net.miginfocom.swing.MigLayout;
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
+import connection.DatabaseConnection;
 
 public class Main extends javax.swing.JFrame {
 
@@ -30,6 +34,7 @@ public class Main extends javax.swing.JFrame {
     private final double addSize = 30;
     private final double coverSize = 40;
     private final double loginSize = 60;
+    private ServiceUser service;
 
     public Main() {
         initComponents();
@@ -37,6 +42,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     private void init() {
+        service = new ServiceUser();
         layout = new MigLayout("fill, insets 0");
         cover = new PanelCover();
         loading = new PanelLoading();
@@ -114,14 +120,37 @@ public class Main extends javax.swing.JFrame {
         });
     }
     
-    private void register (){
+      private void register() {
         ModelUser user = loginAndRegister.getUser();
-       // loading.setVisible(true);
-//       System.out.println(user.getEmail());
-        showMessage(Message.MessageType.ERROR,"Test Message");
-        
-//       verifyCode.setVisible(true);
-
+        try {
+            if (service.checkDuplicateUser(user.getUserName())) {
+                showMessage(Message.MessageType.ERROR, "User name already exit");
+            } else if (service.checkDuplicateEmail(user.getEmail())) {
+                showMessage(Message.MessageType.ERROR, "Email already exit");
+            } else {
+                service.insertUser(user);
+                sendMain(user);
+            }
+        } catch (SQLException e) {
+            showMessage(Message.MessageType.ERROR, "Error Register");
+        }
+    }
+      
+       private void sendMain(ModelUser user) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                loading.setVisible(true);
+//                ModelMessage ms = new ServiceMail().sendMain(user.getEmail(), user.getVerifyCode());
+//                if (ms.isSuccess()) {
+//                    loading.setVisible(false);
+//                    verifyCode.setVisible(true);
+//                } else {
+//                    loading.setVisible(false);
+//                    showMessage(Message.MessageType.ERROR, ms.getMessage());
+//                }
+//            }
+//        }).start();
     }
     
       private void showMessage(Message.MessageType messageType, String message) {
@@ -242,6 +271,17 @@ public class Main extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        try {
+            DatabaseConnection.getInstance().connectToDatabase();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Main().setVisible(true);
+            }
+        });
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Main().setVisible(true);
