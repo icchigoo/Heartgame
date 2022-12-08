@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 
 public class PanelVerifyCode extends javax.swing.JPanel {
-
+ // this class used for varification code 
     public PanelVerifyCode() {
         initComponents();
         setOpaque(false);

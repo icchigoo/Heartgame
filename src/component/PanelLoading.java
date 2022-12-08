@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 
 public class PanelLoading extends javax.swing.JPanel {
-
+// this is loading animation page for login and register page
     public PanelLoading() {
         initComponents();
         setOpaque(false);
@@ -19,7 +19,9 @@ public class PanelLoading extends javax.swing.JPanel {
     }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+
+    //setting up jlabel and layout
+   
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
@@ -37,7 +39,7 @@ public class PanelLoading extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
         );
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
     @Override
     protected void paintComponent(Graphics grphcs) {
@@ -49,7 +51,7 @@ public class PanelLoading extends javax.swing.JPanel {
         super.paintComponent(grphcs);
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    
     private javax.swing.JLabel jLabel1;
-    // End of variables declaration//GEN-END:variables
+   
 }

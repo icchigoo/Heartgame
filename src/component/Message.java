@@ -24,13 +24,16 @@ public class Message extends javax.swing.JPanel {
         setOpaque(false);
         setVisible(false);
     }
-
+// creaitng a meesage box with images to make more user friendly
     public void showMessage(MessageType messageType, String message) {
         this.messageType = messageType;
         lbMessage.setText(message);
         if (messageType == MessageType.SUCCESS) {
+            // the messge is correct then success image will pop up 
             lbMessage.setIcon(new ImageIcon(getClass().getResource("/icon/success.png")));
         } else {
+
+            // if the message is incorrect then user will be have to stay at same page and error image will pop up
             lbMessage.setIcon(new ImageIcon(getClass().getResource("/icon/error.png")));
         }
     }
@@ -62,6 +65,8 @@ public class Message extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     @Override
+
+    //setting the color for message box (code used for user verification)
     protected void paintComponent(Graphics grphcs) {
         Graphics2D g2 = (Graphics2D) grphcs;
         if (messageType == MessageType.SUCCESS) {

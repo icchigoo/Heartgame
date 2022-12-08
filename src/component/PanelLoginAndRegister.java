@@ -32,7 +32,8 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
 
     private ModelUser user;
     private ModelLogin dataLogin;
-    
+    // this is login page 
+    // in this page both login and reisger are compailed
     public PanelLoginAndRegister(ActionListener eventRegister, ActionListener eventLogin) {
         initComponents();
         initRegister(eventRegister);
@@ -41,6 +42,7 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
         register.setVisible(true);
     }
 
+    // setting up j label and creating coulm 
     private void initRegister(ActionListener eventRegister) {
         register.setLayout(new MigLayout("wrap", "push[center]push", "push[]25[]10[]10[]25[]push"));
         JLabel label = new JLabel("Create Account");
@@ -66,6 +68,7 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
         cmd.setText("SIGN UP");
         register.add(cmd, "w 40%, h 40");
         cmd.addActionListener(new ActionListener() {
+            //using action listner and also giving validation
             @Override
             public void actionPerformed(ActionEvent ae) {
                 String userName = txtUser.getText().trim();
@@ -111,7 +114,7 @@ public class PanelLoginAndRegister extends javax.swing.JLayeredPane {
             }
         });
     }
-
+// using if and else statment for login and register
     public void showRegister(boolean show) {
         if (show) {
             register.setVisible(true);

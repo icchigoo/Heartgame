@@ -1,7 +1,7 @@
 package log;
 
 
-
+// this class is used for finding log of the app
 
 public class App {
     public static void main(String[] args) throws Exception {

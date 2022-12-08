@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
 
+    // this page is used for db connection
+
     private static DatabaseConnection instance;
     private Connection connection;
 
@@ -19,6 +21,8 @@ public class DatabaseConnection {
 
     }
 
+    // this is my own data base 
+    // you can put your's to continue with login and register
     public void connectToDatabase() throws SQLException {
         String server = "localhost";
         String port = "3306";

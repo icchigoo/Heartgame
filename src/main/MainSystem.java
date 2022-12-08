@@ -118,7 +118,8 @@ public class MainSystem extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-          new GameGUI().setVisible(true);    
+          new GameGUI().setVisible(true); 
+          this.setVisible(false);   
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 

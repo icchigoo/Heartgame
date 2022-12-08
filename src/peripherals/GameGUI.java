@@ -10,7 +10,7 @@ import java.text.DecimalFormat;
 import javax.swing.*;
 
 import engine.GameEngine;
-import java.awt.FlowLayout;
+
 
 
 
@@ -24,7 +24,7 @@ public class GameGUI extends JFrame implements ActionListener {
 		int solution = Integer.parseInt(e.getActionCommand());
 		boolean correct = myGame.checkSolution(currentGame, solution);
 		int score = myGame.getScore(); 
-		int level=myGame.getLevel();
+		int level=myGame.getLevel(); // this level is call from game engine
 		if (correct) {
 			System.out.println("YEAH!");
 			currentGame = myGame.nextGame(); 
@@ -33,8 +33,10 @@ public class GameGUI extends JFrame implements ActionListener {
 			infoArea.setText("Good!  Score: "+score);
 			infoArea.setFont(new Font("Senserif",Font.ITALIC,18));
 
-			lblLevel.setText("Level:"+level);
+			lblLevel.setText("Level:"+level); //for level as the game goes on
+              
 
+			// seeting the traimer for new level and game to quit
 			timer.stop();
 			second =30;
 			minute =0;
@@ -56,6 +58,8 @@ public class GameGUI extends JFrame implements ActionListener {
 	JTextArea infoArea = null;
 
 
+     
+	 //setting variable for timer and level
 
 	JLabel lblLevel = new JLabel("Level");
 	//Set timer to game
@@ -69,6 +73,7 @@ public class GameGUI extends JFrame implements ActionListener {
 	private void initGame(String player) {
 		setBounds(450, 100,701, 512);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(242, 149, 103));
 
@@ -126,6 +131,8 @@ public class GameGUI extends JFrame implements ActionListener {
 		
 		counterLabel.setText("00:30");
 
+
+		// setting the exit button
 		JButton btnQuite = new JButton("Quit");
 		btnQuite.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -138,7 +145,7 @@ public class GameGUI extends JFrame implements ActionListener {
 		btnQuite.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		panel.add(btnQuite);
 /**
-* when the time is zero the player will be redirect to the EndGame JFrame
+* when the time is zero the game will be automatically closed
 */
 		
 		countdownTimer();

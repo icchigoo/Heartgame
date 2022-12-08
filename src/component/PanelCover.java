@@ -33,6 +33,7 @@ public class PanelCover extends javax.swing.JPanel {
         init();
 
     }
+// this where jlale, text and color are used in login and register page 
 
     private void init() {
         title = new JLabel("Welcome Back!");
@@ -45,6 +46,8 @@ public class PanelCover extends javax.swing.JPanel {
         description1 = new JLabel("login with your personal info");
         description1.setForeground(new Color(245, 245, 245));
         add(description1);
+
+        // here button is used and also action listener is impleamneted
         button = new ButtonOutLine();
         button.setBackground(new Color(255, 255, 255));
         button.setForeground(new Color(255, 255, 255));
@@ -119,6 +122,10 @@ public class PanelCover extends javax.swing.JPanel {
         layout.setComponentConstraints(description1, "pad 0 " + v + "% 0 " + v + "%");
     }
 
+    // this is login page here
+    // if and else statement is used here 
+    // with advance animation
+    // and other likes text, and null also used 
     public void login(boolean login) {
         if (this.isLogin != login) {
             if (login) {
@@ -136,6 +143,5 @@ public class PanelCover extends javax.swing.JPanel {
         }
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    // End of variables declaration//GEN-END:variables
+
 }
