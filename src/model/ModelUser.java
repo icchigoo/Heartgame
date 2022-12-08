@@ -2,6 +2,10 @@ package model;
 
 public class ModelUser {
 
+    // to check the overall info about the user 
+    // also varification code also need to be valied 
+    
+
     public int getUserID() {
         return userID;
     }

@@ -18,6 +18,9 @@ import org.jdesktop.animation.timing.TimingTargetAdapter;
 
 public class Button extends JButton {
 
+
+    // button layout to use in the login and register class
+    
     public Color getEffectColor() {
         return effectColor;
     }

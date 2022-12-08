@@ -11,6 +11,9 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPasswordField;
 
+
+// this is passwrod field for setting validation 
+
 public class MyPasswordField extends JPasswordField {
 
     public String getHint() {

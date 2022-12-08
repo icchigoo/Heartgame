@@ -12,6 +12,9 @@ import javax.mail.internet.MimeMessage;
 
 public class ServiceMail {
 
+    // this is the package i used for sending code to gmail 
+    // its very useful and easy to use
+
     public ModelMessage sendMain(String toEmail, String code) {
         ModelMessage ms = new ModelMessage(false, "");
         String from = "******@gmail.com";
@@ -20,6 +23,8 @@ public class ServiceMail {
         prop.put("mail.smtp.port", "587");
         prop.put("mail.smtp.auth", "true");
         prop.put("mail.smtp.starttls.enable", "true");
+
+        // here i am using college id to sedn code to other user
         String username = "ajaya.chhetri@patancollege.edu.np";
         String password = "Muzan@01";    //  Your email password here
         Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
@@ -36,6 +41,8 @@ public class ServiceMail {
             message.setText(code);
             Transport.send(message);
             ms.setSuccess(true);
+
+            // if the user id is invalid or wrong then i will get the error message in my gmail
         } catch (MessagingException e) {
             if (e.getMessage().equals("Invalid Addresses")) {
                 ms.setMessage("Invalid email");

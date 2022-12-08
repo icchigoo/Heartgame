@@ -1,5 +1,8 @@
 package model;
 
+// mode is creatd for login page
+// to import data from mysql
+
 public class ModelLogin {
 
     public String getEmail() {

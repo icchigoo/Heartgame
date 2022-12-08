@@ -11,8 +11,11 @@ import java.util.Random;
 import model.ModelLogin;
 
 public class ServiceUser {
-
+ 
     private final Connection con;
+
+    // this class is used to get code from the gmail 
+    // it also create random code so that user can be validated 
 
     public ServiceUser() {
         con = DatabaseConnection.getInstance().getConnection();

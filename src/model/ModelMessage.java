@@ -2,6 +2,8 @@ package model;
 
 public class ModelMessage {
 
+    // this page is created to check user validation 
+    // after entering code
     public boolean isSuccess() {
         return success;
     }

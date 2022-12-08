@@ -11,6 +11,8 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 
+// using custom text feild to make more easy to understand 
+
 public class MyTextField extends JTextField {
 
     public String getHint() {
