@@ -170,6 +170,9 @@ public class Main extends javax.swing.JFrame {
             if (user != null) {
                 this.dispose();
                 MainSystem.main(user);
+//                new dashboard().setVisible(true);
+//                this.setVisible(false);
+               
             } else {
                 showMessage(Message.MessageType.ERROR, "Email and Password incorrect");
             }
