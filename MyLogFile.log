@@ -1,0 +1,14 @@
+Dec 08, 2022 11:57:58 PM log.MyLogs main
+WARNING: Exception :: 
+java.lang.ArithmeticException: / by zero
+	at log.MyLogs.main(MyLogs.java:29)
+
+Dec 08, 2022 11:57:58 PM log.MyLogs main
+INFO: end of the program
+Dec 08, 2022 11:59:34 PM log.MyLogs main
+WARNING: Exception :: 
+java.lang.ArithmeticException: / by zero
+	at log.MyLogs.main(MyLogs.java:29)
+
+Dec 08, 2022 11:59:34 PM log.MyLogs main
+INFO: end of the program
